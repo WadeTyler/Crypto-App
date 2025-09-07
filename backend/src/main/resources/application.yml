@@ -3,3 +3,20 @@ server:
 spring:
   application:
     name: crypto-app
+  datasource:
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME}
+  jpa:
+    hibernate:
+      ddl-auto: none
+cryptoapp:
+  jwt:
+    expiration-ms: 86400000
+    secret: ${JWT_SECRET}
+    issuer: crypto-app
+  environment: ${APP_ENV:development}
+logging:
+  level:
+    org.springframework.web: DEBUG
+    org.springframework.security: DEBUG
