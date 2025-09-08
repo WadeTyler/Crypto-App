@@ -16,7 +16,11 @@ cryptoapp:
     secret: ${JWT_SECRET}
     issuer: crypto-app
   environment: ${APP_ENV:development}
+
 logging:
   level:
     org.springframework.web: DEBUG
     org.springframework.security: DEBUG
+coingecko:
+  api-key: ${COIN_GECKO_API_KEY}
+  api-url: ${COIN_GECKO_API_URL:https://api.coingecko.com/api/v3}
