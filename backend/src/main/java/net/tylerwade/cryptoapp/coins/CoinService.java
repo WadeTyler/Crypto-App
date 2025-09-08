@@ -19,14 +19,14 @@ public class CoinService {
     private final CoinGeckoProperties coinGeckoProperties;
     private final RestTemplate restTemplate = new RestTemplate();
 
-    private final HashMap<GetCoinParams, CachedCoinPage> coinCache = new HashMap<>();
+    private final HashMap<GetCoinParams, CachedCoinPage> coinPageCache = new HashMap<>();
     private final CryptoAppProperties cryptoAppProperties;
 
     public Coin[] getCoins(String vsCurrency, int page, int perPage) {
         // Check coin cache
         GetCoinParams params = new GetCoinParams(vsCurrency, page, perPage);
-        if (coinCache.containsKey(params)) {
-            CachedCoinPage cachedCoinPage = coinCache.get(params);
+        if (coinPageCache.containsKey(params)) {
+            CachedCoinPage cachedCoinPage = coinPageCache.get(params);
             if (cachedCoinPage != null) {
                 if (cryptoAppProperties.isProduction()) {
                     // In prod, cache for 2 min
@@ -56,7 +56,7 @@ public class CoinService {
             // Write coins to cache
             CachedCoinPage cachedPage = new CachedCoinPage(coins, LocalDateTime.now());
 
-            coinCache.put(params, cachedPage);
+            coinPageCache.put(params, cachedPage);
 
             return coins;
         } catch (RestClientException e) {
