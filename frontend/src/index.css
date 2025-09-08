@@ -34,6 +34,10 @@ body {
     @apply min-h-screen p-4 pt-20 md:p-8 md:pt-24 lg:p-16 lg:pt-32;
 }
 
+.container {
+    @apply lg:max-w-6xl md:max-w-4xl sm:max-w-3xl max-w-2xl mx-auto;
+}
+
 .text-glow {
     text-shadow: 0 0 5px var(--color-accent), 0 0 10px var(--color-accent), 0 0 20px var(--color-accent);
 }

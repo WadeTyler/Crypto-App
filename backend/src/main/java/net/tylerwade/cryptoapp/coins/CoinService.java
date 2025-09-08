@@ -15,6 +15,7 @@ public class CoinService {
     private final CoinGeckoProperties coinGeckoProperties;
     private final RestTemplate restTemplate = new RestTemplate();
 
+
     public Coin[] getCoins(String vsCurrency, int page, int perPage) {
 
         try {

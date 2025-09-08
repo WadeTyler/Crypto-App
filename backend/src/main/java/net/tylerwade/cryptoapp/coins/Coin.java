@@ -1,6 +1,5 @@
 package net.tylerwade.cryptoapp.coins;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,7 +14,7 @@ public class Coin {
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
-    static class Roi {
+    public static class Roi {
         private double times;
         private String currency;
         private double percentage;
@@ -25,26 +24,27 @@ public class Coin {
     private String symbol;
     private String name;
     private String image;
-    private long currentPrice;
-    private long marketCap;
-    private int marketCapRank;
-    private long fullyDilutedValuation;
-    private long totalVolume;
-    private long high24h;
-    private long low24h;
-    private double priceChange24h;
-    private double priceChangePercentage24h;
-    private long marketCapChange24h;
-    private double marketCapChangePercentage24h;
-    private long circulatingSupply;
-    private long totalSupply;
-    private long maxSupply;
-    private long ath;
-    private double athChangePercentage;
-    private String athDate;
+
+    private double current_price;
+    private double market_cap;
+    private int market_cap_rank;
+    private double fully_diluted_valuation;
+    private double total_volume;
+    private double high_24h;
+    private double low_24h;
+    private double price_change_24h;
+    private double price_change_percentage_24h;
+    private double market_cap_change_24h;
+    private double market_cap_change_percentage_24h;
+    private double circulating_supply;
+    private double total_supply;
+    private Double max_supply; // nullable
+    private double ath;
+    private double ath_change_percentage;
+    private String ath_date;
     private double atl;
-    private double atlChangePercentage;
-    private String atlDate;
+    private double atl_change_percentage;
+    private String atl_date;
     private Roi roi;
-    private String lastUpdated;
+    private String last_updated;
 }

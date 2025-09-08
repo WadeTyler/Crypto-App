@@ -24,6 +24,7 @@ public class SecurityConfig {
                 .cors(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/v*/auth/**").permitAll()
+                        .requestMatchers("/api/v*/coins/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session
