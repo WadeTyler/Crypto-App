@@ -6,7 +6,9 @@
     --color-accent-hover: oklch(51.1% 0.262 276.966); /* Indigo 600 */
     --color-foreground: oklch(92.4% 0.032 272.314); /*Indigo 200 */
     --color-background: oklch(0.174 0.05 283.496);
+    --color-background-secondary: oklch(25.7% 0.09 281.288); /*Indigo 950 */
     --color-secondary: oklch(96.2% 0.018 272.314); /*Indigo 100 */
+
 }
 
 @theme {
@@ -14,6 +16,7 @@
     --color-accent-hover: var(--color-accent-hover);
     --color-foreground: var(--color-foreground);
     --color-background: var(--color-background);
+    --color-background-secondary: var(--color-background-secondary);
     --color-secondary: var(--color-secondary);
 }
 
@@ -24,4 +27,18 @@ body {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+}
+
+.text-glow {
+    text-shadow: 0 0 5px var(--color-accent), 0 0 10px var(--color-accent), 0 0 20px var(--color-accent);
+}
+
+.hover-text-glow:hover {
+    text-shadow: 0 0 5px var(--color-accent), 0 0 10px var(--color-accent), 0 0 20px var(--color-accent);
+    transition: text-shadow 0.2s ease-in-out;
+}
+
+.hover-glow:hover {
+    box-shadow: 0 0 5px var(--color-accent), 0 0 10px var(--color-accent), 0 0 20px var(--color-accent);
+    transition: box-shadow 0.2s ease-in-out;
 }
