@@ -34,7 +34,7 @@ export default function HomePage() {
         <div className="mx-auto max-w-4xl text-center text-balance flex flex-col items-center justify-center">
           <h1
             className="lg:text-5xl md:text-4xl text-3xl font-bold text-accent text-shadow-md text-shadow-accent/20">
-            The number 1 Crypto Portfolio Tracker
+            The #1 Crypto Portfolio Tracker
           </h1>
           <p className="mt-4 md:text-lg text-secondary max-w-2xl">
             Track your favorite cryptocurrencies and manage your portfolio with ease. Stay updated with real-time prices
@@ -43,7 +43,7 @@ export default function HomePage() {
           </p>
         </div>
 
-        <div className="flex flex-col items-center gap-16 w-full mx-auto">
+        <div className="flex flex-col items-center gap-8 w-full mx-auto">
 
           <form className="flex items-center justify-between w-full input-bar p-0! overflow-hidden">
             <input type="text" className="w-full px-3 py-2 focus:outline-none"
