@@ -121,7 +121,7 @@ function CoinDataHeader({coinData}: { coinData: CoinData }) {
       <div className="flex items-center justify-start gap-4">
         <img src={coinData.image.large} alt={coinData.name} className="w-16 h-16"/>
         <div>
-          <h1 className="lg:text-5xl text-4xl font-bold text-accent text-shadow-md text-shadow-accent-hover">
+          <h1 className="lg:text-5xl text-4xl font-bold text-accent">
             {coinData.name} <span
             className="text-sm text-secondary/70 text-shadow-none font-medium">({coinData.symbol.toUpperCase()})</span>
           </h1>
