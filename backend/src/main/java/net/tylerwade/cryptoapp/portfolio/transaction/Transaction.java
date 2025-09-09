@@ -1,4 +1,4 @@
-package net.tylerwade.cryptoapp.portfolio;
+package net.tylerwade.cryptoapp.portfolio.transaction;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -6,38 +6,35 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import net.tylerwade.cryptoapp.auth.AppUser;
-import net.tylerwade.cryptoapp.portfolio.transaction.Transaction;
+import net.tylerwade.cryptoapp.portfolio.Portfolio;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
-@EntityListeners(AuditingEntityListener.class)
 @Entity
-@Table(name = "portfolios")
+@EntityListeners(AuditingEntityListener.class)
+@Table(name = "transactions")
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
-public class Portfolio {
+public class Transaction {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id", nullable = false)
-    private AppUser user;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "portfolio_id", nullable = false)
+    private Portfolio portfolio;
 
-    @Column(nullable = false)
-    private String name;
-
-    @OneToMany(mappedBy = "portfolio", fetch = FetchType.EAGER, orphanRemoval = true)
-    private List<Transaction> transactions = new ArrayList<>();
+    private String cryptoId;
+    private String type;
+    private double quantity;
+    private double price;
+    private double fee;
 
     @CreatedDate
     private LocalDateTime createdAt;

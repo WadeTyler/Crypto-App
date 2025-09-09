@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.tylerwade.cryptoapp.config.CryptoAppProperties;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -46,6 +47,18 @@ public class GlobalExceptionHandler {
     public ErrorResponse handleMissingParams(MissingServletRequestParameterException ex) {
         log(ex);
         return ErrorResponse.from(ex, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleHttpMessageNotReadable(HttpMessageNotReadableException ex) {
+        log(ex);
+        return new ErrorResponse(
+                HttpStatus.BAD_REQUEST.getReasonPhrase(),
+                "Malformed JSON request.",
+                HttpStatus.BAD_REQUEST.value(),
+                LocalDateTime.now().toString()
+        );
     }
 
     @ExceptionHandler(Exception.class)
