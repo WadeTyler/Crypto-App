@@ -158,6 +158,7 @@ function CoinRow({coin}: { coin: Coin }) {
       <div className="flex items-center space-x-4">
         <img src={coin.image} alt={coin.name} className="w-8 h-8 rounded-full shadow-md"/>
         <span>{coin.name}</span>
+        <span className='text-secondary/70 text-sm'>#{coin.market_cap_rank}</span>
       </div>
 
       <div className="text-right flex items-center gap-4">

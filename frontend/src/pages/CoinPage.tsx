@@ -106,9 +106,9 @@ function MarketData({coinData}: { coinData: CoinData }) {
   return (
     <div className="flex flex-col gap-4">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        <CurrentPrice />
-        <MarketCap />
-        <CoinPercentageChange />
+        <CurrentPrice/>
+        <MarketCap/>
+        <CoinPercentageChange/>
       </div>
     </div>
   )
@@ -120,11 +120,18 @@ function CoinDataHeader({coinData}: { coinData: CoinData }) {
     <div className="flex flex-col gap-4">
       <div className="flex items-center justify-start gap-4">
         <img src={coinData.image.large} alt={coinData.name} className="w-16 h-16"/>
-        <div>
-          <h1 className="lg:text-5xl text-4xl font-bold text-accent">
-            {coinData.name} <span
-            className="text-sm text-secondary/70 text-shadow-none font-medium">({coinData.symbol.toUpperCase()})</span>
+        <div className="flex flex-col">
+          <h1 className="lg:text-5xl text-4xl font-bold text-accent flex items-center gap-2">
+            {coinData.name}
           </h1>
+          <div className="flex mt-1 items-center gap-2">
+            <span className="text-xs text-foreground/70 bg-secondary/20 rounded-full shadow-md px-2 py-1">
+              #{coinData.market_data.market_cap_rank}
+            </span>
+            <span className="text-sm text-secondary/70 text-shadow-none font-medium">
+              ({coinData.symbol.toUpperCase()})
+            </span>
+          </div>
         </div>
       </div>
 

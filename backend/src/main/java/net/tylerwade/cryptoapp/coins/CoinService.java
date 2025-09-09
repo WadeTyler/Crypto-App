@@ -40,8 +40,8 @@ public class CoinService {
                         return cachedCoinPage.getCoins();
                     }
                 } else {
-                    // In dev, cache for 5 min
-                    if (cachedCoinPage.getCachedAt().isAfter(LocalDateTime.now().minusMinutes(5))) {
+                    // In dev, cache for 10 min
+                    if (cachedCoinPage.getCachedAt().isAfter(LocalDateTime.now().minusMinutes(10))) {
                         System.out.println("Cache hit for " + params);
                         return cachedCoinPage.getCoins();
                     }
