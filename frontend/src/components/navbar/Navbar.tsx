@@ -14,7 +14,7 @@ export default function Navbar() {
   const location = useLocation();
 
   return (
-    <header className="w-full bg-background-secondary shadow-lg p-4 fixed top-0 left-0 z-[1000] h-16 flex items-center justify-center">
+    <header className="w-full bg-background-secondary p-4 fixed top-0 left-0 z-[1000] h-16 flex items-center justify-center border-b-accent border-b">
       <div className="container mx-auto flex items-center gap-4 justify-between">
         <Link to="/" className="flex items-center justify-center gap-2 font-bold text-2xl">
           <FontAwesomeIcon icon={faCoins} />
