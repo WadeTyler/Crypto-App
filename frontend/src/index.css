@@ -56,6 +56,10 @@ body {
     @apply bg-accent hover:bg-accent-hover text-foreground font-semibold py-2 px-4 rounded-md shadow-md duration-200 hover:shadow-accent active:bg-accent flex items-center justify-center gap-2 cursor-pointer disabled:cursor-not-allowed;
 }
 
+.btn-2 {
+    @apply bg-background border border-accent-hover rounded-md text-foreground py-2 px-3 focus:border-accent hover:border-accent focus:ring-accent focus:ring-3 active:bg-accent hover:shadow-md duration-200 flex items-center justify-center gap-2 cursor-pointer disabled:cursor-not-allowed;
+}
+
 .input-container {
     @apply flex flex-col gap-1;
 }
