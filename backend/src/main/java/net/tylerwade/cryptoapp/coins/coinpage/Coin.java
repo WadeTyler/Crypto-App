@@ -1,4 +1,4 @@
-package net.tylerwade.cryptoapp.coins;
+package net.tylerwade.cryptoapp.coins.coinpage;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

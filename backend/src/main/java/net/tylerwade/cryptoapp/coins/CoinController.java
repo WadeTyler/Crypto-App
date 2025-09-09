@@ -1,10 +1,8 @@
 package net.tylerwade.cryptoapp.coins;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import net.tylerwade.cryptoapp.coins.coinpage.Coin;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/coins")
@@ -18,5 +16,10 @@ public class CoinController {
                            @RequestParam(value = "page", required = false, defaultValue = "0") int page,
                            @RequestParam(value = "per_page", required = false, defaultValue = "100") int perPage) {
         return coinService.getCoins(vsCurrency, page, perPage);
+    }
+
+    @GetMapping("/{id}")
+    public CoinData getCoinById(@PathVariable String id) {
+        return coinService.getCoinById(id);
     }
 }

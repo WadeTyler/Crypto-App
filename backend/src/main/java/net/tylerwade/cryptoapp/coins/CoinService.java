@@ -1,6 +1,9 @@
 package net.tylerwade.cryptoapp.coins;
 
 import lombok.RequiredArgsConstructor;
+import net.tylerwade.cryptoapp.coins.coinpage.CachedCoinPage;
+import net.tylerwade.cryptoapp.coins.coinpage.Coin;
+import net.tylerwade.cryptoapp.coins.coinpage.GetCoinPageParams;
 import net.tylerwade.cryptoapp.config.CoinGeckoProperties;
 import net.tylerwade.cryptoapp.config.CryptoAppProperties;
 import org.springframework.http.HttpEntity;
@@ -17,14 +20,16 @@ import java.util.HashMap;
 @RequiredArgsConstructor
 public class CoinService {
     private final CoinGeckoProperties coinGeckoProperties;
-    private final RestTemplate restTemplate = new RestTemplate();
-
-    private final HashMap<GetCoinParams, CachedCoinPage> coinPageCache = new HashMap<>();
     private final CryptoAppProperties cryptoAppProperties;
+
+    private final RestTemplate restTemplate = new RestTemplate();
+    private final HashMap<GetCoinPageParams, CachedCoinPage> coinPageCache = new HashMap<>();
+    private final HashMap<String, CoinData> coinDataCache = new HashMap<>();
+
 
     public Coin[] getCoins(String vsCurrency, int page, int perPage) {
         // Check coin cache
-        GetCoinParams params = new GetCoinParams(vsCurrency, page, perPage);
+        GetCoinPageParams params = new GetCoinPageParams(vsCurrency, page, perPage);
         if (coinPageCache.containsKey(params)) {
             CachedCoinPage cachedCoinPage = coinPageCache.get(params);
             if (cachedCoinPage != null) {
@@ -34,8 +39,7 @@ public class CoinService {
                         System.out.println("Cache hit for " + params);
                         return cachedCoinPage.getCoins();
                     }
-                }
-                else {
+                } else {
                     // In dev, cache for 5 min
                     if (cachedCoinPage.getCachedAt().isAfter(LocalDateTime.now().minusMinutes(5))) {
                         System.out.println("Cache hit for " + params);
@@ -64,9 +68,50 @@ public class CoinService {
         }
     }
 
+
+    public CoinData getCoinById(String id) {
+        if (coinDataCache.containsKey(id)) {
+            // Check cache
+            CoinData cachedData = coinDataCache.get(id);
+            if (cachedData != null) {
+                if (cryptoAppProperties.isProduction()) {
+                    // In prod, cache for 2 min
+                    if (cachedData.getCachedAt() != null && cachedData.getCachedAt().isAfter(LocalDateTime.now().minusMinutes(2))) {
+                        System.out.println("Cache hit for coin " + id);
+                        return cachedData;
+                    }
+                } else {
+                    // In dev, cache for 10 min
+                    if (cachedData.getCachedAt() != null && cachedData.getCachedAt().isAfter(LocalDateTime.now().minusMinutes(10))) {
+                        System.out.println("Cache hit for coin " + id);
+                        return cachedData;
+                    }
+                }
+            }
+        }
+
+        // No cache, fetch from API
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.set("Accept", "application/json");
+            headers.set("x-cg-demo-api-key", coinGeckoProperties.getApiKey());
+
+            String url = buildUrl(String.format("/coins/%s?tickers=false&market_data=true&community_data=false&developer_data=false&sparkline=false", id));
+
+            CoinData coinData = restTemplate.getForObject(url, CoinData.class, new HttpEntity<>(headers));
+            if (coinData != null) {
+                coinData.setCachedAt(LocalDateTime.now());
+                coinDataCache.put(id, coinData);
+                return coinData;
+            } else {
+                throw new RuntimeException("Coin data is null for id: " + id);
+            }
+        } catch (RestClientException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     private String buildUrl(String path) {
-        StringBuilder urlBuilder = new StringBuilder(coinGeckoProperties.getApiUrl());
-        urlBuilder.append(path);
-        return urlBuilder.toString();
+        return coinGeckoProperties.getApiUrl() + path;
     }
 }

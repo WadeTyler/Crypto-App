@@ -1,4 +1,4 @@
-package net.tylerwade.cryptoapp.coins;
+package net.tylerwade.cryptoapp.coins.coinpage;
 
 import lombok.*;
 
@@ -7,7 +7,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class GetCoinParams {
+public class GetCoinPageParams {
     private String vsCurrency;
     private int page;
     private int perPage;
