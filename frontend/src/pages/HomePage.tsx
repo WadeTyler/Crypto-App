@@ -18,7 +18,7 @@ export default function HomePage() {
       <div className="container mx-auto flex flex-col items-center gap-16">
         <div className="mx-auto max-w-4xl text-center text-balance flex flex-col items-center justify-center">
           <h1
-            className="lg:text-7xl text-5xl font-bold text-accent text-shadow-md text-shadow-accent/20">
+            className="lg:text-7xl text-5xl font-bold text-accent text-shadow-lg text-shadow-accent/30">
             The #1 Crypto Portfolio Tracker
           </h1>
           <p className="mt-4 md:text-lg text-secondary max-w-2xl">
@@ -39,7 +39,7 @@ export default function HomePage() {
 function CoinsList() {
 
   // States
-  const [vs_currency, setVsCurrency] = useState("usd");
+  const [vs_currency, setVsCurrency] = useState(localStorage.getItem("vs_currency") || "usd");
   const [page, setPage] = useState(1);
   const [per_page, setPerPage] = useState(50);
 
@@ -89,13 +89,13 @@ function CoinsList() {
         </form>
 
         {/* Currency Selector */}
-        <select id="currency-selector" className="input-bar" name="currency" onChange={handleCurrencyChange}>
+        <select id="currency-selector" className="input-bar" name="currency" onChange={handleCurrencyChange} value={vs_currency}>
           <option value="usd">$ USD</option>
           <option value="eur">€ EUR</option>
         </select>
 
         {/* Per Page Selector */}
-        <select id="per-page-selector" name="per_page" className="input-bar" onChange={handlePerPageChange}>
+        <select id="per-page-selector" name="per_page" className="input-bar" onChange={handlePerPageChange} value={per_page}>
           <option value="50">50 per page</option>
           <option value="100">100 per page</option>
           <option value="200">200 per page</option>

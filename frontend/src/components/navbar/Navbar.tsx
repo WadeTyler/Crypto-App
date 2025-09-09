@@ -1,4 +1,4 @@
-import {Link} from "react-router";
+import {Link, useLocation} from "react-router";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faCoins, faRightToBracket, faUser} from "@fortawesome/free-solid-svg-icons";
 import {useQuery} from "@tanstack/react-query";
@@ -11,17 +11,19 @@ export default function Navbar() {
     queryFn: getCurrentUser
   });
 
+  const location = useLocation();
+
   return (
     <header className="w-full bg-background-secondary shadow-lg p-4 fixed top-0 left-0 z-[1000] h-16 flex items-center justify-center">
       <div className="container mx-auto flex items-center gap-4 justify-between">
-        <Link to="/" className="flex items-center justify-center gap-2 font-bold text-2xl hover-text-glow">
-          <FontAwesomeIcon icon={faCoins}/>
+        <Link to="/" className="flex items-center justify-center gap-2 font-bold text-2xl">
+          <FontAwesomeIcon icon={faCoins} />
           <span>Crypto App</span>
         </Link>
 
         <nav className="flex items-center gap-4 mx-auto absolute left-1/2 -translate-x-1/2">
-          <Link to="/" className="hover-text-glow">Home</Link>
-          <Link to="/portfolio" className="hover-text-glow">Portfolio</Link>
+          <Link to="/" className={`hover-text-glow ${location.pathname === "/" && 'text-glow'}`}>Home</Link>
+          <Link to="/portfolio" className={`hover-text-glow ${location.pathname === "/portfolio" && 'text-glow'}`}>Portfolio</Link>
         </nav>
 
         <div>
