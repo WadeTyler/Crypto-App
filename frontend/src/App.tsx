@@ -8,6 +8,7 @@ import {getCurrentUser} from "./features/auth/auth.api.ts";
 import {useEffect} from "react";
 import ProfilePage from "./pages/ProfilePage.tsx";
 import LoadingPage from "./pages/LoadingPage.tsx";
+import CoinPage from "./pages/CoinPage.tsx";
 
 
 export default function App() {
@@ -32,6 +33,7 @@ export default function App() {
         <Routes>
           <Route path="/auth" element={authUser ? <Navigate to="/profile"/> : <AuthPage />}/>
           <Route path="/profile" element={!authUser ? <Navigate to="/auth"/> : <ProfilePage />}/>
+          <Route path="/coins/:id" element={<CoinPage />} />
           <Route path="/" element={<HomePage/>}/>
           <Route path="*" element={<NotFoundPage/>}/>
         </Routes>

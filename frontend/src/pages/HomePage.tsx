@@ -11,6 +11,7 @@ import {
   faMagnifyingGlass
 } from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {useNavigate} from "react-router";
 
 export default function HomePage() {
   return (
@@ -146,11 +147,13 @@ function CoinsList() {
 }
 
 function CoinRow({coin}: { coin: Coin }) {
+  const navigate = useNavigate();
 
   const currencySymbol = localStorage.getItem("vs_currency") === "eur" ? "€" : "$";
 
   return (
     <div
+      onClick={() => navigate(`/coins/${coin.id}`)}
       className="w-full p-4 border-b-accent border-b last-of-type:border-b-0 flex items-center justify-between hover:bg-accent-hover duration-200 cursor-pointer">
       <div className="flex items-center space-x-4">
         <img src={coin.image} alt={coin.name} className="w-8 h-8 rounded-full shadow-md"/>

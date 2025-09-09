@@ -54,6 +54,9 @@ public class CoinData {
         private TotalVolume total_volume;
         private High24h high_24h;
         private Low24h low_24h;
+        private Ath ath;
+        private Atl atl;
+        private PriceChange24hInCurrency price_change_24h_in_currency;
         private PriceChangePercentage24InCurrency price_change_percentage_24h_in_currency;
         private double total_supply;
         private double max_supply;
@@ -90,7 +93,25 @@ public class CoinData {
         }
 
         @Getter @Setter @NoArgsConstructor
+        public static class PriceChange24hInCurrency {
+            private double usd;
+            private double eur;
+        }
+
+        @Getter @Setter @NoArgsConstructor
         public static class PriceChangePercentage24InCurrency {
+            private double usd;
+            private double eur;
+        }
+
+        @Getter @Setter @NoArgsConstructor
+        public static class Ath {
+            private double usd;
+            private double eur;
+        }
+
+        @Getter @Setter @NoArgsConstructor
+        public static class Atl {
             private double usd;
             private double eur;
         }
