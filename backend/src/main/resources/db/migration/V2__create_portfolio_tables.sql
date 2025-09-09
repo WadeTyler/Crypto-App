@@ -1,0 +1,70 @@
+-- {
+--   userId: "user123",
+--   portfolios: [
+--     {
+--       portfolioId: "portfolio456",
+--       name: "Main Portfolio",
+--       createdAt: "2024-01-15T10:00:00Z",
+--       holdings: [
+--         {
+--           symbol: "BTC",
+--           name: "Bitcoin",
+--           quantity: 0.5,
+--           averageCostBasis: 45000,
+--           transactions: [
+--             {
+--               id: "tx789",
+--               type: "buy|sell|transfer",
+--               quantity: 0.25,
+--               price: 44000,
+--               fee: 15.50,
+--               timestamp: "2024-01-15T10:00:00Z",
+--               exchange: "coinbase"
+--             }
+--           ]
+--         }
+--       ],
+--       totalValue: 22500.00,
+--       totalCost: 22515.50,
+--       pnl: -15.50,
+--       pnlPercentage: -0.07
+--     }
+--   ]
+-- }
+
+CREATE TABLE IF NOT EXISTS portfolios (
+    id SERIAL PRIMARY KEY,
+    user_id VARCHAR(255) NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    modified_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+COMMIT;
+
+CREATE TABLE IF NOT EXISTS holdings (
+    crypto_id VARCHAR(255) NOT NULL,
+    portfolio_id INTEGER NOT NULL,
+    quantity DECIMAL(20, 8) NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    modified_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (crypto_id, portfolio_id),
+    FOREIGN KEY (portfolio_id) REFERENCES portfolios(id) ON DELETE CASCADE
+);
+
+COMMIT;
+
+CREATE TABLE IF NOT EXISTS transactions (
+    id SERIAL PRIMARY KEY,
+    portfolio_id INTEGER NOT NULL,
+    crypto_id VARCHAR(255) NOT NULL,
+    type VARCHAR(10) NOT NULL CHECK (type IN ('buy', 'sell')),
+    quantity DECIMAL(20, 8) NOT NULL,
+    price DECIMAL(20, 8) NOT NULL,
+    fee DECIMAL(20, 8) NOT NULL DEFAULT 0,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    modified_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (portfolio_id) REFERENCES portfolios(id) ON DELETE CASCADE
+);
+
+COMMIT;
