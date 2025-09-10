@@ -9,6 +9,7 @@ import {useEffect} from "react";
 import ProfilePage from "./pages/ProfilePage.tsx";
 import LoadingPage from "./pages/LoadingPage.tsx";
 import CoinPage from "./pages/CoinPage.tsx";
+import PortfolioPage from "./pages/PortfolioPage.tsx";
 
 
 export default function App() {
@@ -31,8 +32,9 @@ export default function App() {
       )}
       {!isLoadingAuthUser && (
         <Routes>
-          <Route path="/auth" element={authUser ? <Navigate to="/profile"/> : <AuthPage />}/>
+          <Route path="/auth" element={authUser ? <Navigate to="/portfolio"/> : <AuthPage />}/>
           <Route path="/profile" element={!authUser ? <Navigate to="/auth"/> : <ProfilePage />}/>
+          <Route path="/portfolio" element={!authUser ? <Navigate to="/auth"/> : <PortfolioPage />}/>
           <Route path="/coins/:id" element={<CoinPage />} />
           <Route path="/" element={<HomePage/>}/>
           <Route path="*" element={<NotFoundPage/>}/>
