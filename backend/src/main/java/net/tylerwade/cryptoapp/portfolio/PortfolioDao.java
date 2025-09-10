@@ -14,4 +14,6 @@ public interface PortfolioDao extends JpaRepository<Portfolio, Long> {
     List<Portfolio> findAllByUser(AppUser user);
 
     Optional<Portfolio> findByIdAndUser(Long id, AppUser user);
+
+    boolean existsByNameAndUserAndIdNot(String newName, AppUser user, Long id);
 }

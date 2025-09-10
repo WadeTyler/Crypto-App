@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import net.tylerwade.cryptoapp.auth.AppUser;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,8 +22,15 @@ public class PortfolioController {
         return portfolioService.createPortfolio(name, user);
     }
 
+    @PutMapping("/{portfolioId}")
+    public Portfolio updatePortfolio(@PathVariable Long portfolioId,
+                                     @RequestParam String name,
+                                     @AuthenticationPrincipal AppUser user) {
+        return portfolioService.updatePortfolio(portfolioId, name, user);
+    }
+
     @GetMapping
-    public List<Portfolio> getAllBYUser(Authentication authentication) {
+    public List<Portfolio> getAllByUser(Authentication authentication) {
         AppUser user = (AppUser) authentication.getPrincipal();
         return portfolioService.findAllByUser(user);
     }

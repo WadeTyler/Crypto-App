@@ -20,7 +20,6 @@ public class TransactionService {
     private final HoldingService holdingService;
 
     public Transaction createTransaction(AppUser user, Long portfolioId, CreateTransactionRequest createTransactionRequest) {
-
         // Find the portfolio to ensure it exists - throws if not found
         Portfolio portfolio = portfolioService.findByIdAndUser(portfolioId, user);
 
@@ -36,15 +35,13 @@ public class TransactionService {
                 .build();
 
         Transaction savedTransaction = transactionDao.save(transaction);
-
         // Update holding
-        holdingService.updateHoldingFromTransaction(savedTransaction);
-
+        holdingService.updateHolding(getAll(portfolioId, user));
+        // Return
         return savedTransaction;
     }
 
     public List<Transaction> getAll(Long portfolioId, AppUser user) {
-        var portfolio = portfolioService.findByIdAndUser(portfolioId, user);
-        return portfolio.getTransactions();
+        return transactionDao.findAllByPortfolioIdAndPortfolio_User(portfolioId, user);
     }
 }

@@ -37,6 +37,7 @@ public class Portfolio {
     @Column(nullable = false)
     private String name;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "portfolio", fetch = FetchType.EAGER, orphanRemoval = true)
     private List<Transaction> transactions = new ArrayList<>();
 

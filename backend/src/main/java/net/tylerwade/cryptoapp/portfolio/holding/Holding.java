@@ -25,8 +25,6 @@ public class Holding {
     private String cryptoId;
 
     @Id
-    private Long portfolioId;
-
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "portfolio_id")
     @JsonIgnore

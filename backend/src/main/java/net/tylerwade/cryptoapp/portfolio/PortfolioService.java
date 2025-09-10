@@ -31,6 +31,17 @@ public class PortfolioService {
         return portfolioDao.save(portfolio);
     }
 
+    public Portfolio updatePortfolio(Long id, String newName, AppUser user) {
+        var portfolio = findByIdAndUser(id, user);
+        // Check if a portfolio with the new name exists (excluding the current portfolio)
+        if (portfolioDao.existsByNameAndUserAndIdNot(newName, user, id)) {
+            throw HttpRequestException.badRequest("You already a portfolio with that name.");
+        }
+
+        portfolio.setName(newName);
+        return portfolioDao.save(portfolio);
+    }
+
     public List<Portfolio> findAllByUser(AppUser user) {
         return portfolioDao.findAllByUser(user);
     }
