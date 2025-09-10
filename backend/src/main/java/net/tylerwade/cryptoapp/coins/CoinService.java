@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import net.tylerwade.cryptoapp.coins.coinpage.CachedCoinPage;
 import net.tylerwade.cryptoapp.coins.coinpage.Coin;
 import net.tylerwade.cryptoapp.coins.coinpage.GetCoinPageParams;
+import net.tylerwade.cryptoapp.coins.query.SearchResult;
 import net.tylerwade.cryptoapp.config.CoinGeckoProperties;
 import net.tylerwade.cryptoapp.config.CryptoAppProperties;
 import org.springframework.http.HttpEntity;
@@ -25,6 +26,7 @@ public class CoinService {
     private final RestTemplate restTemplate = new RestTemplate();
     private final HashMap<GetCoinPageParams, CachedCoinPage> coinPageCache = new HashMap<>();
     private final HashMap<String, CoinData> coinDataCache = new HashMap<>();
+    private final HashMap<String, SearchResult> searchCache = new HashMap<>();
 
 
     public Coin[] getCoins(String vsCurrency, int page, int perPage, String ids) {
@@ -71,7 +73,6 @@ public class CoinService {
         }
     }
 
-
     public CoinData getCoinById(String id) {
         if (coinDataCache.containsKey(id)) {
             // Check cache
@@ -108,6 +109,36 @@ public class CoinService {
                 return coinData;
             } else {
                 throw new RuntimeException("Coin data is null for id: " + id);
+            }
+        } catch (RestClientException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public SearchResult searchCoins(String query) {
+        // Check if cached
+        if (searchCache.containsKey(query)) {
+            SearchResult cachedResult = searchCache.get(query);
+            // Cache for 10m
+            if (cachedResult != null && cachedResult.getCachedAt() != null && cachedResult.getCachedAt().isAfter(LocalDateTime.now().minusMinutes(10))) {
+                System.out.println("Cache hit for search: " + query);
+                return cachedResult;
+            }
+        }
+        // Cache miss - fetch from API
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.set("Accept", "application/json");
+            headers.set("x-cg-demo-api-key", coinGeckoProperties.getApiKey());
+
+            String url = buildUrl(String.format("/search?query=%s", query));
+            SearchResult searchResult = restTemplate.getForObject(url, SearchResult.class, new HttpEntity<>(headers));
+            if (searchResult != null) {
+                searchResult.setCachedAt(LocalDateTime.now());
+                searchCache.put(query, searchResult);
+                return searchResult;
+            } else {
+                throw new RuntimeException("Search result is null for query: " + query);
             }
         } catch (RestClientException e) {
             throw new RuntimeException(e);

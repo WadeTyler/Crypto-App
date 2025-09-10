@@ -2,6 +2,7 @@ package net.tylerwade.cryptoapp.coins;
 
 import lombok.RequiredArgsConstructor;
 import net.tylerwade.cryptoapp.coins.coinpage.Coin;
+import net.tylerwade.cryptoapp.coins.query.SearchResult;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -22,5 +23,10 @@ public class CoinController {
     @GetMapping("/{id}")
     public CoinData getCoinById(@PathVariable String id) {
         return coinService.getCoinById(id);
+    }
+
+    @GetMapping("/search")
+    public SearchResult search(@RequestParam("query") String query) {
+        return coinService.searchCoins(query);
     }
 }
