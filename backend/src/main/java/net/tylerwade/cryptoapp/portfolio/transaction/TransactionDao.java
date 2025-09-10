@@ -9,4 +9,6 @@ import java.util.List;
 @Repository
 public interface TransactionDao extends JpaRepository<Transaction, Long> {
     List<Transaction> findAllByPortfolioIdAndPortfolio_User(Long portfolioId, AppUser user);
+
+    List<Transaction> findAllByPortfolioIdAndCryptoIdAndPortfolio_User(Long portfolioId, String cryptoId, AppUser user);
 }

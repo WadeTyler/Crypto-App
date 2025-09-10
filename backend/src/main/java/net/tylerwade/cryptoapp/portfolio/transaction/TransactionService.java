@@ -36,9 +36,13 @@ public class TransactionService {
 
         Transaction savedTransaction = transactionDao.save(transaction);
         // Update holding
-        holdingService.updateHolding(getAll(portfolioId, user));
+        holdingService.updateHolding(getAllByCryptoId(portfolioId, createTransactionRequest.cryptoId(), user));
         // Return
         return savedTransaction;
+    }
+
+    public List<Transaction> getAllByCryptoId(Long portfolioId, String cryptoId, AppUser user) {
+        return transactionDao.findAllByPortfolioIdAndCryptoIdAndPortfolio_User(portfolioId, cryptoId, user);
     }
 
     public List<Transaction> getAll(Long portfolioId, AppUser user) {
