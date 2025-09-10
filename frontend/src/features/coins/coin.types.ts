@@ -38,6 +38,7 @@ export type GetCoinsParams = {
   page?: number;
   per_page?: number;   // match API param naming
   vs_currency: string; // match API param naming
+  ids?: string;
 };
 
 export interface CoinData {

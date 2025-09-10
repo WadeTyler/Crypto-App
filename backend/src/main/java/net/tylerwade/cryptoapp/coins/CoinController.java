@@ -14,8 +14,9 @@ public class CoinController {
     @GetMapping
     public Coin[] getCoins(@RequestParam("vs_currency") String vsCurrency,
                            @RequestParam(value = "page", required = false, defaultValue = "0") int page,
-                           @RequestParam(value = "per_page", required = false, defaultValue = "100") int perPage) {
-        return coinService.getCoins(vsCurrency, page, perPage);
+                           @RequestParam(value = "per_page", required = false, defaultValue = "100") int perPage,
+                           @RequestParam(value = "ids", required = false, defaultValue = "") String ids) {
+        return coinService.getCoins(vsCurrency, page, perPage, ids);
     }
 
     @GetMapping("/{id}")

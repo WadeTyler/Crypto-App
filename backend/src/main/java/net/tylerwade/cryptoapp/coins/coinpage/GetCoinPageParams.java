@@ -11,6 +11,7 @@ public class GetCoinPageParams {
     private String vsCurrency;
     private int page;
     private int perPage;
+    private String ids;
 
 
 }

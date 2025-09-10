@@ -27,9 +27,9 @@ public class CoinService {
     private final HashMap<String, CoinData> coinDataCache = new HashMap<>();
 
 
-    public Coin[] getCoins(String vsCurrency, int page, int perPage) {
+    public Coin[] getCoins(String vsCurrency, int page, int perPage, String ids) {
         // Check coin cache
-        GetCoinPageParams params = new GetCoinPageParams(vsCurrency, page, perPage);
+        GetCoinPageParams params = new GetCoinPageParams(vsCurrency, page, perPage, ids);
         if (coinPageCache.containsKey(params)) {
             CachedCoinPage cachedCoinPage = coinPageCache.get(params);
             if (cachedCoinPage != null) {
@@ -55,6 +55,9 @@ public class CoinService {
             headers.set("x-cg-demo-api-key", coinGeckoProperties.getApiKey());
 
             String url = buildUrl(String.format("/coins/markets?vs_currency=%s&page=%d&per_page=%d", vsCurrency, page, perPage));
+            if (ids != null && !ids.isEmpty()) {
+                url += "&ids=" + ids;
+            }
             Coin[] coins = restTemplate.getForObject(url, Coin[].class, new HttpEntity<>(headers));
 
             // Write coins to cache
