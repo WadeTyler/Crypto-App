@@ -1,4 +1,4 @@
-import type {Coin, CoinData, GetCoinsParams} from "./coin.types.ts";
+import type {Coin, CoinData, GetCoinsParams, SearchResult} from "./coin.types.ts";
 
 const API_URL = import.meta.env.VITE_BASE_API_URL;
 
@@ -27,6 +27,15 @@ export async function getCoinDataById(id: string | undefined): Promise<CoinData>
 
   if (!response.ok) {
     throw new Error(data.message || 'Failed to fetch coin data');
+  }
+  return data;
+}
+
+export async function searchCoins(query: string): Promise<SearchResult> {
+  const response = await fetch(`${API_URL}/api/v1/coins/search?query=${query}`);
+  const data = await response.json();
+  if (!response.ok) {
+    throw new Error(data.message || 'Failed to search coins');
   }
   return data;
 }

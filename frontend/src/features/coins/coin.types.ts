@@ -127,3 +127,17 @@ export interface Atl {
   usd: number;
   eur: number;
 }
+
+export type SearchResult = {
+  coins: SearchCoin[];
+  cachedAt: string; // ISO 8601 date string from LocalDateTime
+}
+
+export type SearchCoin = {
+  id: string;
+  name: string;
+  api_symbol: string;
+  market_cap_rank: number;
+  thumb: string;
+  large: string;
+}
