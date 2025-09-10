@@ -84,7 +84,7 @@ function MarketData({coinData}: { coinData: CoinData }) {
           </p>
           <p className="text-xs text-secondary/70">
             ATL: {getCurrencySymbol(vs_currency)}
-            {coinData.market_data.ath[vs_currency as 'usd' | 'eur'].toLocaleString()}
+            {coinData.market_data.atl[vs_currency as 'usd' | 'eur'].toLocaleString()}
           </p>
         </div>
       </div>
