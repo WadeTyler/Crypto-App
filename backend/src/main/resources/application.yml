@@ -12,7 +12,7 @@ spring:
       ddl-auto: none
 cryptoapp:
   jwt:
-    expiration-ms: 86400000
+    expiration-ms: 259200000 # 3 days
     secret: ${JWT_SECRET}
     issuer: crypto-app
   environment: ${APP_ENV:development}
