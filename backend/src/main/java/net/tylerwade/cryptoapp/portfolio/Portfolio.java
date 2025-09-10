@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import net.tylerwade.cryptoapp.auth.AppUser;
+import net.tylerwade.cryptoapp.portfolio.holding.Holding;
 import net.tylerwade.cryptoapp.portfolio.transaction.Transaction;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -38,6 +39,9 @@ public class Portfolio {
 
     @OneToMany(mappedBy = "portfolio", fetch = FetchType.EAGER, orphanRemoval = true)
     private List<Transaction> transactions = new ArrayList<>();
+
+    @OneToMany(mappedBy = "portfolio", fetch = FetchType.EAGER, orphanRemoval = true)
+    private List<Holding> holdings = new ArrayList<>();
 
     @CreatedDate
     private LocalDateTime createdAt;

@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import net.tylerwade.cryptoapp.auth.AppUser;
 import net.tylerwade.cryptoapp.portfolio.Portfolio;
 import net.tylerwade.cryptoapp.portfolio.PortfolioService;
+import net.tylerwade.cryptoapp.portfolio.holding.HoldingService;
 import net.tylerwade.cryptoapp.portfolio.transaction.dto.CreateTransactionRequest;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +17,7 @@ public class TransactionService {
 
     private final TransactionDao transactionDao;
     private final PortfolioService portfolioService;
+    private final HoldingService holdingService;
 
     public Transaction createTransaction(AppUser user, Long portfolioId, CreateTransactionRequest createTransactionRequest) {
 
@@ -33,7 +35,12 @@ public class TransactionService {
                 .modifiedAt(LocalDateTime.now())
                 .build();
 
-        return transactionDao.save(transaction);
+        Transaction savedTransaction = transactionDao.save(transaction);
+
+        // Update holding
+        holdingService.updateHoldingFromTransaction(savedTransaction);
+
+        return savedTransaction;
     }
 
     public List<Transaction> getAll(Long portfolioId, AppUser user) {
