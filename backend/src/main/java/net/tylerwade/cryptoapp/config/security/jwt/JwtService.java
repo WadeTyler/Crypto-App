@@ -12,6 +12,10 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.Date;
 
+/**
+ * Service responsible for generating and parsing JWT tokens and creating the
+ * associated auth cookies used for stateless authentication.
+ */
 @Service
 @RequiredArgsConstructor
 public class JwtService {
@@ -19,6 +23,12 @@ public class JwtService {
     private final JwtProperties jwtProperties;
     private final CryptoAppProperties cryptoAppProperties;
 
+    /**
+     * Generate a signed JWT containing basic user identity claims.
+     *
+     * @param user authenticated user
+     * @return signed JWT token string
+     */
     public String generateToken(AppUser user) {
         try {
             return Jwts.builder()
@@ -36,6 +46,12 @@ public class JwtService {
         }
     }
 
+    /**
+     * Extract the user id (subject) from a JWT token.
+     *
+     * @param token JWT token string
+     * @return user id (subject)
+     */
     public String extractUserIdFromToken(String token) {
         try {
             return Jwts.parser()
@@ -48,6 +64,12 @@ public class JwtService {
         }
     }
 
+    /**
+     * Create an HTTP-only cookie holding the JWT for client auth.
+     *
+     * @param token JWT token
+     * @return configured Cookie
+     */
     public Cookie createCookie(String token) {
         Cookie cookie = new Cookie(JwtProperties.AUTH_TOKEN_COOKIE_NAME, token);
         cookie.setHttpOnly(true);
@@ -57,6 +79,11 @@ public class JwtService {
         return cookie;
     }
 
+    /**
+     * Create a cookie that clears the auth token (logout helper).
+     *
+     * @return clearing Cookie
+     */
     public Cookie createLogoutCookie() {
         Cookie cookie = new Cookie(JwtProperties.AUTH_TOKEN_COOKIE_NAME, "");
         cookie.setHttpOnly(true);

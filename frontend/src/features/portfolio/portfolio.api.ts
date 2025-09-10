@@ -32,11 +32,9 @@ export async function getPortfolioById(id: number | null): Promise<Portfolio | n
   });
 
   const data = await response.json();
-  console.log(data);
   if (!response.ok) {
     throw new Error(data.message || 'Failed to fetch portfolios');
   }
-  console.log(response);
 
   return data;
 }

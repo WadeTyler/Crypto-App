@@ -16,7 +16,10 @@ import org.springframework.web.client.RestTemplate;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 
-
+/**
+ * Service for interacting with external CoinGecko API and providing simple in-memory caching
+ * for coin lists, single coin data and search results.
+ */
 @Service
 @RequiredArgsConstructor
 public class CoinService {
@@ -28,7 +31,14 @@ public class CoinService {
     private final HashMap<String, CoinData> coinDataCache = new HashMap<>();
     private final HashMap<String, SearchResult> searchCache = new HashMap<>();
 
-
+    /**
+     * Fetch a page of market coins optionally filtered by ids. Results cached briefly depending on environment.
+     * @param vsCurrency fiat currency code (e.g. "usd")
+     * @param page page number
+     * @param perPage page size
+     * @param ids comma separated coin ids or null
+     * @return array of Coin
+     */
     public Coin[] getCoins(String vsCurrency, int page, int perPage, String ids) {
         // Check coin cache
         GetCoinPageParams params = new GetCoinPageParams(vsCurrency, page, perPage, ids);
@@ -73,6 +83,11 @@ public class CoinService {
         }
     }
 
+    /**
+     * Retrieve single coin data by id with short-lived cache.
+     * @param id coin id
+     * @return CoinData
+     */
     public CoinData getCoinById(String id) {
         if (coinDataCache.containsKey(id)) {
             // Check cache
@@ -115,6 +130,11 @@ public class CoinService {
         }
     }
 
+    /**
+     * Perform a search query against CoinGecko with 10 minute cache.
+     * @param query search input
+     * @return SearchResult containing coins, exchanges, categories
+     */
     public SearchResult searchCoins(String query) {
         // Check if cached
         if (searchCache.containsKey(query)) {
@@ -145,6 +165,11 @@ public class CoinService {
         }
     }
 
+    /**
+     * Build full API URL for a given path.
+     * @param path relative path
+     * @return full URL string
+     */
     private String buildUrl(String path) {
         return coinGeckoProperties.getApiUrl() + path;
     }

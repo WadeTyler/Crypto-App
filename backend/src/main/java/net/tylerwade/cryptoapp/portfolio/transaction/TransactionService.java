@@ -11,6 +11,10 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * Service for creating and retrieving portfolio transactions. Responsible for
+ * persisting trades and triggering holding recalculation for the affected crypto.
+ */
 @Service
 @RequiredArgsConstructor
 public class TransactionService {
@@ -19,6 +23,13 @@ public class TransactionService {
     private final PortfolioService portfolioService;
     private final HoldingService holdingService;
 
+    /**
+     * Create a new transaction (buy / sell) for the user's portfolio and update the corresponding holding.
+     * @param user authenticated user
+     * @param portfolioId portfolio identifier
+     * @param createTransactionRequest request payload with trade details
+     * @return saved Transaction
+     */
     public Transaction createTransaction(AppUser user, Long portfolioId, CreateTransactionRequest createTransactionRequest) {
         // Find the portfolio to ensure it exists - throws if not found
         Portfolio portfolio = portfolioService.findByIdAndUser(portfolioId, user);
@@ -35,16 +46,29 @@ public class TransactionService {
                 .build();
 
         Transaction savedTransaction = transactionDao.save(transaction);
-        // Update holding
+        // Update holding after persisting transaction
         holdingService.updateHolding(getAllByCryptoId(portfolioId, createTransactionRequest.cryptoId(), user));
         // Return
         return savedTransaction;
     }
 
+    /**
+     * Get all transactions for a crypto in the user's portfolio.
+     * @param portfolioId portfolio identifier
+     * @param cryptoId coin id
+     * @param user authenticated user
+     * @return list of Transaction
+     */
     public List<Transaction> getAllByCryptoId(Long portfolioId, String cryptoId, AppUser user) {
         return transactionDao.findAllByPortfolioIdAndCryptoIdAndPortfolio_User(portfolioId, cryptoId, user);
     }
 
+    /**
+     * Get all transactions in a portfolio for the user.
+     * @param portfolioId portfolio identifier
+     * @param user authenticated user
+     * @return list of Transaction
+     */
     public List<Transaction> getAll(Long portfolioId, AppUser user) {
         return transactionDao.findAllByPortfolioIdAndPortfolio_User(portfolioId, user);
     }
