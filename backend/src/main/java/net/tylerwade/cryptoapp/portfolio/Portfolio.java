@@ -17,6 +17,10 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Entity representing a user's crypto asset portfolio. Holds transactions and
+ * derived holdings and is owned by an AppUser.
+ */
 @EntityListeners(AuditingEntityListener.class)
 @Entity
 @Table(name = "portfolios")

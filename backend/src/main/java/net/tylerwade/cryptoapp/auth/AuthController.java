@@ -13,6 +13,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * REST endpoints for user authentication & account management such as
+ * registration, login, logout, fetching the currently authenticated user
+ * and changing passwords. Issues and manages a JWT via HTTP-only cookies.
+ */
 @RestController
 @RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
@@ -20,6 +25,11 @@ public class AuthController {
     private final AppUserService userService;
     private final JwtService jwtService;
 
+    /**
+     * Return the currently authenticated user (principal) or 401 if unauthenticated.
+     * @param authentication Spring Security authentication object
+     * @return authenticated AppUser
+     */
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public AppUser getAuthenticatedUser(Authentication authentication) {
@@ -29,6 +39,12 @@ public class AuthController {
         return (AppUser) authentication.getPrincipal();
     }
 
+    /**
+     * Register a new user account and set a JWT cookie.
+     * @param response servlet response to add cookie
+     * @param registerRequest registration payload
+     * @return newly created user
+     */
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
     public AppUser register(HttpServletResponse response, @RequestBody @Validated RegisterRequest registerRequest) {
@@ -39,6 +55,12 @@ public class AuthController {
         return user;
     }
 
+    /**
+     * Authenticate a user and set a JWT cookie on success.
+     * @param response servlet response
+     * @param loginRequest login credentials
+     * @return authenticated user
+     */
     @PostMapping("/login")
     @ResponseStatus(HttpStatus.OK)
     public AppUser login(HttpServletResponse response, @RequestBody @Valid LoginRequest loginRequest) {
@@ -49,6 +71,9 @@ public class AuthController {
         return user;
     }
 
+    /**
+     * Clear the authentication cookie (client treated as logged out).
+     */
     @PostMapping("/logout")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void logout(HttpServletResponse response) {
@@ -57,6 +82,11 @@ public class AuthController {
     }
 
 
+    /**
+     * Change the authenticated user's password after verifying current password.
+     * @param authentication Spring authentication (must be valid)
+     * @param changePasswordRequest payload containing current and new password
+     */
     @PatchMapping("/change-password")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void changePassword(Authentication authentication, @RequestBody @Valid ChangePasswordRequest changePasswordRequest) {

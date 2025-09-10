@@ -16,6 +16,10 @@ import java.time.LocalDateTime;
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "transactions")
+/*
+ * Entity representing an individual trade (buy or sell) recorded in a portfolio
+ * for a specific crypto asset. Used to derive holdings over time.
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

@@ -16,6 +16,10 @@ import java.time.LocalDateTime;
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "holdings")
+/*
+ * Entity representing the aggregate position (quantity) for a specific crypto
+ * within a portfolio. Quantity is derived from related buy/sell transactions.
+ */
 @Data
 @NoArgsConstructor @AllArgsConstructor @Builder
 @IdClass(HoldingId.class)

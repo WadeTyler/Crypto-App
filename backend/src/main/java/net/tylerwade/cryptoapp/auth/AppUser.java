@@ -16,6 +16,11 @@ import java.util.List;
 @Entity
 @Table(name = "app_users")
 @EntityListeners(AuditingEntityListener.class)
+/*
+ * Entity representing an application user account used for authentication and ownership
+ * of portfolios. Implements Spring Security's UserDetails for integration with the
+ * authentication framework.
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
