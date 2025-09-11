@@ -1,4 +1,4 @@
-import type {AppUser, LoginRequest, RegisterRequest} from "./auth.types.ts";
+import type {AppUser, ChangePasswordRequest, LoginRequest, RegisterRequest} from "./auth.types.ts";
 
 const API_URL = import.meta.env.VITE_BASE_API_URL;
 
@@ -71,5 +71,34 @@ export async function logout(): Promise<void> {
   if (!response.ok) {
     const data = await response.json();
     throw new Error(data.message || "Logout failed");
+  }
+}
+
+export async function forgotPassword(username: string): Promise<void> {
+  const response = await fetch(`${API_URL}/api/v1/auth/forgot-password?username=${username}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    }
+  });
+
+  if (!response.ok) {
+    const data = await response.json();
+    throw new Error(data.message || "Forgot password request failed");
+  }
+}
+
+export async function changePassword(changePasswordRequest: ChangePasswordRequest) {
+  const response = await fetch(`${API_URL}/api/v1/auth/change-password`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(changePasswordRequest)
+  });
+
+  if (!response.ok) {
+    const data = await response.json();
+    throw new Error(data.message || "Change password request failed");
   }
 }

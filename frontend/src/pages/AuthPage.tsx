@@ -3,6 +3,7 @@ import {faEnvelope, faLock, faRightToBracket, faSignature, faUserPlus} from "@fo
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {useMutation, useQueryClient} from "@tanstack/react-query";
 import {login, register} from "../features/auth/auth.api.ts";
+import {Link} from "react-router";
 
 
 export default function AuthPage() {
@@ -14,7 +15,7 @@ export default function AuthPage() {
         <div className="flex items-center justify-center flex-col gap-8 m-auto max-w-xl w-full">
           {/* Mode Selector */}
           <ModeSelector mode={mode} setMode={setMode}/>
-          {mode === "login" ? <LoginForm/> : <RegisterForm />}
+          {mode === "login" ? <LoginForm/> : <RegisterForm/>}
         </div>
       </div>
     </div>
@@ -28,7 +29,8 @@ function ModeSelector({mode, setMode}: {
   const modeSelected = "bg-accent-hover shadow-accent shadow-md font-bold";
 
   return (
-    <div className="bg-background-secondary w-full rounded-md h-8 flex items-center justify-between shadow-lg text-sm lg:text-base">
+    <div
+      className="bg-background-secondary w-full rounded-md h-8 flex items-center justify-between shadow-lg text-sm lg:text-base">
       <button
         onClick={() => setMode("login")}
         className={`w-full flex items-center justify-center gap-2 h-full cursor-pointer rounded-md duration-200 hover:bg-accent-hover hover:shadow-accent hover:shadow-md hover:font-bold ${mode === "login" && modeSelected}`}>
@@ -68,7 +70,8 @@ function LoginForm() {
   }
 
   return (
-    <form className="w-full bg-background-secondary p-4 lg:p-8 shadow-xl rounded-md flex flex-col gap-4" onSubmit={handleSubmit}>
+    <form className="w-full bg-background-secondary p-4 lg:p-8 shadow-xl rounded-md flex flex-col gap-4"
+          onSubmit={handleSubmit}>
       <div>
         <h2 className="text-2xl font-semibold text-center text-balance">Welcome back!</h2>
         <p className="text-center text-balance text-sm text-secondary">
@@ -95,6 +98,9 @@ function LoginForm() {
                placeholder="Enter your password" name="password" id="password"
                required minLength={8} maxLength={100}
         />
+        <Link className="text-sm text-accent ml-auto hover:underline font-semibold" to="/auth/forgot-password">
+          Forgot Password?
+        </Link>
       </div>
 
       {error && (
@@ -135,7 +141,8 @@ function RegisterForm() {
   }
 
   return (
-    <form className="w-full bg-background-secondary p-4 lg:p-8 shadow-xl rounded-md flex flex-col gap-4" onSubmit={handleSubmit}>
+    <form className="w-full bg-background-secondary p-4 lg:p-8 shadow-xl rounded-md flex flex-col gap-4"
+          onSubmit={handleSubmit}>
       <div>
         <h2 className="text-2xl font-semibold text-center text-balance">Let's get started!</h2>
         <p className="text-center text-balance text-sm text-secondary">
@@ -155,7 +162,7 @@ function RegisterForm() {
 
       <div className="input-container">
         <label htmlFor="firstName" className="input-label">
-          <FontAwesomeIcon icon={faSignature} />
+          <FontAwesomeIcon icon={faSignature}/>
           First Name:
         </label>
         <input type="text" className="input-bar"
@@ -166,7 +173,7 @@ function RegisterForm() {
 
       <div className="input-container">
         <label htmlFor="lastName" className="input-label">
-          <FontAwesomeIcon icon={faSignature} />
+          <FontAwesomeIcon icon={faSignature}/>
           Last Name:
         </label>
         <input type="text" className="input-bar"

@@ -25,3 +25,10 @@ export type RegisterRequest = {
   password: string;
   verifyPassword: string;
 }
+
+export type ChangePasswordRequest = {
+  code: string;
+  username: string;
+  newPassword: string;
+  verifyNewPassword: string;
+}
