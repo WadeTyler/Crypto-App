@@ -25,7 +25,8 @@ export default function Footer() {
             <div className="flex gap-4 flex-wrap">
               <Link to="/" className="hover-text-glow">Home</Link>
               <Link to="/portfolio" className="hover-text-glow">Portfolio</Link>
-              {/* Add more when available */}
+              <Link to="/auth" className="hover-text-glow">Login</Link>
+              <Link to="/profile" className="hover-text-glow">Profile</Link>
             </div>
           </nav>
 
