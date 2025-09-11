@@ -4,17 +4,21 @@ import LoadingPage from "./LoadingPage.tsx";
 import {getAllPortfolios, getPortfolioById} from "../features/portfolio/portfolio.api.ts";
 import {LoadingSm} from "../components/LoadingSpinner.tsx";
 import {useState} from "react";
-import {getCoins}  from "../features/coins/coin.api.ts";
+import {getCoins} from "../features/coins/coin.api.ts";
 import CreateTransactionForm from "../components/portfolio/CreateTransactionForm.tsx";
 import HoldingDisplay from "../components/portfolio/HoldingDisplay.tsx";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faHandshake} from "@fortawesome/free-solid-svg-icons";
+import {faBriefcase, faHandshake, faTrash} from "@fortawesome/free-solid-svg-icons";
+import DeletePortfolioForm from "../components/portfolio/DeletePortfolioForm.tsx";
 
 export default function PortfolioPage() {
   // States
   const [targetPortfolioId, setTargetPortfolioId] = useState<number | null>(null);
   const [vs_currency] = useState(localStorage.getItem('vs_currency') || 'usd');
+
+  // Form States
   const [createTransactionOpen, setCreateTransactionOpen] = useState<boolean>(false);
+  const [deletePortfolioOpen, setDeletePortfolioOpen] = useState<boolean>(false);
 
   // Query Data
   const {data: authUser, isLoading: loadingAuthUser} = useQuery({
@@ -76,16 +80,33 @@ export default function PortfolioPage() {
           {portfolios && (
             <div className="flex items-center gap-4 ml-auto">
 
-              <button className="btn-2">+</button>
+              {/* Create Portfolio Button */}
+              <button className="btn-2">
+                <FontAwesomeIcon icon={faBriefcase}/>
+                Create Portfolio
+              </button>
+
               {/* Portfolio Selector */}
               <select name="portfolio" id="portfolio" className="btn-2"
                       onChange={(e) => setTargetPortfolioId(Number(e.target.value))}
+                      value={targetPortfolioId || ""}
               >
                 <option value="" disabled selected>Select Portfolio</option>
                 {portfolios.map((portfolio) => (
                   <option key={portfolio.id} value={portfolio.id}>{portfolio.name}</option>
                 ))}
               </select>
+
+              {/* Delete Portfolio Button */}
+              {selectedPortfolio && (
+                <button
+                  className="hover:text-danger p-1 rounded-md hover:border-danger border border-transparent cursor-pointer"
+                  title="Delete Portfolio"
+                  onClick={() => setDeletePortfolioOpen(true)}
+                >
+                  <FontAwesomeIcon icon={faTrash}/>
+                </button>
+              )}
             </div>
           )}
         </div>
@@ -118,7 +139,7 @@ export default function PortfolioPage() {
             <div className="flex flex-col gap-4">
               <div className="flex items-center gap-4 ml-auto">
                 <button className="btn-2" onClick={() => setCreateTransactionOpen(true)}>
-                  <FontAwesomeIcon icon={faHandshake} />
+                  <FontAwesomeIcon icon={faHandshake}/>
                   Create Transaction
                 </button>
               </div>
@@ -141,6 +162,12 @@ export default function PortfolioPage() {
 
       {createTransactionOpen && selectedPortfolio && (
         <CreateTransactionForm selectedPortfolio={selectedPortfolio} closeForm={() => setCreateTransactionOpen(false)}/>
+      )}
+      {deletePortfolioOpen && selectedPortfolio && (
+        <DeletePortfolioForm closeForm={() => setDeletePortfolioOpen(false)}
+                             selectedPortfolio={selectedPortfolio}
+                             resetTargetPortfolioId={() => setTargetPortfolioId(null)}
+        />
       )}
 
     </div>

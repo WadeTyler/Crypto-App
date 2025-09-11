@@ -38,3 +38,18 @@ export async function getPortfolioById(id: number | null): Promise<Portfolio | n
 
   return data;
 }
+
+export async function deletePortfolioById(id: number): Promise<void> {
+  const response = await fetch(`${API_URL}/api/v1/portfolios/${id}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+  });
+
+  if (!response.ok) {
+    const data = await response.json();
+    throw new Error(data.message || 'Failed to delete portfolio');
+  }
+}
