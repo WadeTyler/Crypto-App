@@ -50,6 +50,7 @@ function CoinsList() {
     queryFn: () => getCoins({vs_currency, per_page, page})
   });
 
+
   // Functions
   function handleCurrencyChange(e: ChangeEvent<HTMLSelectElement>) {
     e.preventDefault();
