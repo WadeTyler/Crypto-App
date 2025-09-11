@@ -1,11 +1,13 @@
 import {Link, useParams} from "react-router";
 import {useQuery} from "@tanstack/react-query";
-import {getCoinDataById} from "../features/coins/coin.api.ts";
+import {getCoinDataById, getMarketChart} from "../features/coins/coin.api.ts";
 import {LoadingMd} from "../components/LoadingSpinner.tsx";
 import {useState} from "react";
 import type {CoinData} from "../features/coins/coin.types.ts";
 import {faArrowTrendDown, faArrowTrendUp} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import * as React from "react";
+import {type AxisOptions, Chart} from "react-charts";
 
 export default function CoinPage() {
 
@@ -105,6 +107,7 @@ function MarketData({coinData}: { coinData: CoinData }) {
 
   return (
     <div className="flex flex-col gap-4">
+      <PriceChart coinData={coinData}/>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         <CurrentPrice/>
         <MarketCap/>
@@ -153,6 +156,7 @@ function CoinDataHeader({coinData}: { coinData: CoinData }) {
 
 
       <CoinDataDescription description={coinData.description.en}/>
+
     </div>
   )
 }
@@ -160,14 +164,14 @@ function CoinDataHeader({coinData}: { coinData: CoinData }) {
 function CoinDataDescription({description}: { description: string }) {
   const [isExpanded, setIsExpanded] = useState(false);
 
-  if (description.length <= 500) {
+  if (description.length <= 200) {
     return <p className="text-sm text-secondary/90">{description}</p>;
   }
 
   return (
     <div>
       <p className="text-sm text-secondary/90 flex flex-col items-start">
-        {isExpanded ? description : description.substring(0, 500) + '...'}
+        {isExpanded ? description : description.substring(0, 200) + '...'}
         {isExpanded ? (
           <button className="text-secondary/70 hover:underline" onClick={() => setIsExpanded(false)}>View less</button>
         ) : (
@@ -175,5 +179,88 @@ function CoinDataDescription({description}: { description: string }) {
         )}
       </p>
     </div>
+  )
+}
+
+function PriceChart({coinData}: { coinData: CoinData }) {
+  const [days, setDays] = useState(7);
+  const [vs_currency] = useState(localStorage.getItem("vs_currency") || "usd");
+
+  const {data: marketChart, isLoading: loadingMarketChart, error: marketChartError} = useQuery({
+    queryKey: ['marketChart', coinData.id, days, vs_currency],
+    queryFn: async () => {
+      return await getMarketChart(coinData.id, days, vs_currency);
+    }
+  });
+
+  type DailyPrice = {
+    date: Date;
+    price: number;
+  }
+
+  type Series = {
+    label: string;
+    data: DailyPrice[];
+  }
+
+  const data: Series[] = [
+    {
+      label: coinData.name,
+      data: marketChart ? marketChart?.prices.map((price): DailyPrice => ({
+        date: new Date(price[0]),
+        price: price[1]
+      })) : []
+    }
+  ];
+
+  const primaryAxis = React.useMemo(
+    (): AxisOptions<DailyPrice> => ({
+      getValue: datum => datum.date,
+    }),
+    []
+  );
+
+  const secondaryAxes = React.useMemo(
+    (): AxisOptions<DailyPrice>[] => [
+      {
+        getValue: datum => datum.price,
+      },
+    ],
+    []
+  );
+
+  if (loadingMarketChart) {
+    return <LoadingMd/>;
+  } else if (marketChartError) {
+    return <p className="text-danger text-center text-balance">{(marketChartError as Error).message}</p>;
+  } else return (
+    <>
+      <select className="w-fit! ml-auto input-bar text-xs!" id="days" name="days"
+              onChange={(e) => setDays(parseInt(e.target.value))}
+              value={days}
+      >
+        <option value="7">7 Days</option>
+        <option value="14">14 Days</option>
+        <option value="30">30 Days</option>
+        <option value="90">90 Days</option>
+        <option value="180">180 Days</option>
+        <option value="365">1 Year</option>
+      </select>
+      <div
+        className="w-full min-h-[300px] p-4 bg-background-secondary rounded-md shadow-[0_0_10px_var(--color-accent)] overflow-hidden flex flex-col gap-4">
+        {marketChart && !marketChartError && !loadingMarketChart && (
+          <Chart options={{
+            data,
+            primaryAxis,
+            secondaryAxes,
+            dark: true,
+            defaultColors: [
+              "#615FFFFF"
+            ]
+          }}
+          />
+        )}
+      </div>
+    </>
   )
 }

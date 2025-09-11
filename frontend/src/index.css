@@ -2,7 +2,7 @@
 @import "tailwindcss";
 
 :root {
-    --color-accent: oklch(58.5% 0.233 277.117); /*Indigo 500*/
+    --color-accent: oklch(58.5% 0.233 277.117); /*Indigo 500*/ /* #615FFFFF */
     --color-accent-hover: oklch(51.1% 0.262 276.966); /* Indigo 600 */
     --color-secondary: oklch(92.4% 0.032 272.314); /*Indigo 200 */
     --color-background: oklch(0.139 0.031 285.444);
