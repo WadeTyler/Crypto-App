@@ -10,6 +10,7 @@ import ProfilePage from "./pages/ProfilePage.tsx";
 import LoadingPage from "./pages/LoadingPage.tsx";
 import CoinPage from "./pages/CoinPage.tsx";
 import PortfolioPage from "./pages/PortfolioPage.tsx";
+import Footer from "./components/Footer.tsx";
 
 
 export default function App() {
@@ -40,6 +41,8 @@ export default function App() {
           <Route path="*" element={<NotFoundPage/>}/>
         </Routes>
       )}
+
+      <Footer />
     </BrowserRouter>
   )
 }
