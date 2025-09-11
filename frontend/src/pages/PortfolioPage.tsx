@@ -10,6 +10,7 @@ import HoldingDisplay from "../components/portfolio/HoldingDisplay.tsx";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faBriefcase, faHandshake, faTrash} from "@fortawesome/free-solid-svg-icons";
 import DeletePortfolioForm from "../components/portfolio/DeletePortfolioForm.tsx";
+import CreatePortfolioForm from "../components/portfolio/CreatePortfolioForm.tsx";
 
 export default function PortfolioPage() {
   // States
@@ -19,6 +20,7 @@ export default function PortfolioPage() {
   // Form States
   const [createTransactionOpen, setCreateTransactionOpen] = useState<boolean>(false);
   const [deletePortfolioOpen, setDeletePortfolioOpen] = useState<boolean>(false);
+  const [createPortfolioOpen, setCreatePortfolioOpen] = useState<boolean>(false);
 
   // Query Data
   const {data: authUser, isLoading: loadingAuthUser} = useQuery({
@@ -81,7 +83,7 @@ export default function PortfolioPage() {
             <div className="flex items-center gap-4 ml-auto">
 
               {/* Create Portfolio Button */}
-              <button className="btn-2">
+              <button className="btn-2" onClick={() => setCreatePortfolioOpen(true)}>
                 <FontAwesomeIcon icon={faBriefcase}/>
                 Create Portfolio
               </button>
@@ -167,6 +169,11 @@ export default function PortfolioPage() {
         <DeletePortfolioForm closeForm={() => setDeletePortfolioOpen(false)}
                              selectedPortfolio={selectedPortfolio}
                              resetTargetPortfolioId={() => setTargetPortfolioId(null)}
+        />
+      )}
+      {createPortfolioOpen && (
+        <CreatePortfolioForm closeForm={() => setCreatePortfolioOpen(false)}
+                             setTargetPortfolioId={setTargetPortfolioId}
         />
       )}
 

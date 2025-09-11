@@ -53,3 +53,19 @@ export async function deletePortfolioById(id: number): Promise<void> {
     throw new Error(data.message || 'Failed to delete portfolio');
   }
 }
+
+export async function createPortfolio(name: string): Promise<Portfolio> {
+  const response = await fetch(`${API_URL}/api/v1/portfolios?name=${name}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+  });
+
+  const data = await response.json();
+  if (!response.ok) {
+    throw new Error(data.message || 'Failed to create portfolio');
+  }
+  return data;
+}
