@@ -11,11 +11,13 @@ spring:
     hibernate:
       ddl-auto: none
 cryptoapp:
+  environment: ${APP_ENV:development}
   jwt:
     expiration-ms: 259200000 # 3 days
     secret: ${JWT_SECRET}
     issuer: crypto-app
-  environment: ${APP_ENV:development}
+  mail-queue-url: ${MAIL_QUEUE_URL}
+  service-email: ${SERVICE_EMAIL}
 
 logging:
   level:

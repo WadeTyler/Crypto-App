@@ -13,6 +13,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public class CryptoAppProperties {
 
     private String environment = "development"; // default to development
+    private String mailQueueUrl;
+    private String serviceEmail;
 
     public boolean isProduction() {
         return environment.equalsIgnoreCase("production");

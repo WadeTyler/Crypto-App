@@ -81,19 +81,23 @@ public class AuthController {
         response.addCookie(jwtService.createLogoutCookie());
     }
 
+    /**
+     * Initiate the forgot password process by generating a reset code and emailing it to the user.
+     * @param username username (email) of the user requesting a password reset
+     */
+    @PostMapping("/forgot-password")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void forgotPassword(@RequestParam String username) {
+        userService.forgotPassword(username);
+    }
 
     /**
-     * Change the authenticated user's password after verifying current password.
-     * @param authentication Spring authentication (must be valid)
-     * @param changePasswordRequest payload containing current and new password
+     * Change the user's password using a valid reset code.
+     * @param changePasswordRequest password change payload
      */
     @PatchMapping("/change-password")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void changePassword(Authentication authentication, @RequestBody @Valid ChangePasswordRequest changePasswordRequest) {
-        if (authentication == null || !authentication.isAuthenticated()) {
-            throw HttpRequestException.unauthorized("User unauthenticated.");
-        }
-        AppUser user = (AppUser) authentication.getPrincipal();
-        userService.changePassword(user, changePasswordRequest);
+    public void changePassword(@RequestBody @Valid ChangePasswordRequest changePasswordRequest) {
+        userService.changePassword(changePasswordRequest);
     }
 }
