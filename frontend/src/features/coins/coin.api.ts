@@ -1,4 +1,4 @@
-import type {Coin, CoinData, GetCoinsParams, SearchResult} from "./coin.types.ts";
+import type {Coin, CoinData, GetCoinsParams, MarketChart, SearchResult} from "./coin.types.ts";
 
 const API_URL = import.meta.env.VITE_BASE_API_URL;
 
@@ -36,6 +36,17 @@ export async function searchCoins(query: string): Promise<SearchResult> {
   const data = await response.json();
   if (!response.ok) {
     throw new Error(data.message || 'Failed to search coins');
+  }
+  return data;
+}
+
+export async function getMarketChart(id: string, days: number, vs_currency: string): Promise<MarketChart> {
+  const response = await fetch(`${API_URL}/api/v1/coins/${id}/market_chart?vs_currency=${vs_currency}&days=${days}`);
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.message || 'Failed to fetch market chart data');
   }
   return data;
 }

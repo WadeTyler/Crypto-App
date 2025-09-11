@@ -2,6 +2,7 @@ package net.tylerwade.cryptoapp.coins;
 
 import lombok.RequiredArgsConstructor;
 import net.tylerwade.cryptoapp.coins.coinpage.Coin;
+import net.tylerwade.cryptoapp.coins.marketchart.MarketChart;
 import net.tylerwade.cryptoapp.coins.query.SearchResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -50,5 +51,21 @@ public class CoinController {
     @GetMapping("/search")
     public SearchResult search(@RequestParam("query") String query) {
         return coinService.searchCoins(query);
+    }
+
+    /**
+     * Get historical market chart data for a coin.
+     * @param id coin id
+     * @param days number of days of data to retrieve
+     * @param vs_currency fiat currency code (e.g. usd)
+     * @return market chart data
+     */
+    @GetMapping("/{id}/market_chart")
+    public MarketChart getMarketChart(
+            @PathVariable String id,
+            @RequestParam(value = "days", required = false, defaultValue = "7") int days,
+            @RequestParam(value = "vs_currency", required = false, defaultValue = "usd") String vs_currency
+    ) {
+        return coinService.getMarketChartData(id, days, vs_currency);
     }
 }

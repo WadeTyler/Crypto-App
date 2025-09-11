@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import net.tylerwade.cryptoapp.coins.coinpage.CachedCoinPage;
 import net.tylerwade.cryptoapp.coins.coinpage.Coin;
 import net.tylerwade.cryptoapp.coins.coinpage.GetCoinPageParams;
+import net.tylerwade.cryptoapp.coins.marketchart.GetMarketChartParams;
+import net.tylerwade.cryptoapp.coins.marketchart.MarketChart;
 import net.tylerwade.cryptoapp.coins.query.SearchResult;
 import net.tylerwade.cryptoapp.config.CoinGeckoProperties;
 import net.tylerwade.cryptoapp.config.CryptoAppProperties;
@@ -30,6 +32,7 @@ public class CoinService {
     private final HashMap<GetCoinPageParams, CachedCoinPage> coinPageCache = new HashMap<>();
     private final HashMap<String, CoinData> coinDataCache = new HashMap<>();
     private final HashMap<String, SearchResult> searchCache = new HashMap<>();
+    private final HashMap<GetMarketChartParams, MarketChart> marketChartCache = new HashMap<>();
 
     /**
      * Fetch a page of market coins optionally filtered by ids. Results cached briefly depending on environment.
@@ -159,6 +162,45 @@ public class CoinService {
                 return searchResult;
             } else {
                 throw new RuntimeException("Search result is null for query: " + query);
+            }
+        } catch (RestClientException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Fetch market chart data for a coin over a number of days with 12 hour cache.
+     * @param id coin id
+     * @param days number of days (1,7,14,30,90,180,365,max)
+     * @param vs_currency fiat currency code (e.g. "usd")
+     * @return MarketChart data
+     */
+    public MarketChart getMarketChartData(String id, int days, String vs_currency) {
+        // Check cache
+        GetMarketChartParams params = new GetMarketChartParams(id, days, vs_currency);
+        if (marketChartCache.containsKey(params)) {
+            MarketChart marketChart = marketChartCache.get(params);
+            // Cache for 12 hours
+            System.out.println("Cache hit for market chart: " + params);
+            if (marketChart != null && marketChart.getCachedAt().isAfter(LocalDateTime.now().minusHours(12))) {
+                return marketChart;
+            }
+        }
+
+        // Cache miss - fetch from API
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.set("Accept", "application/json");
+            headers.set("x-cg-demo-api-key", coinGeckoProperties.getApiKey());
+
+            String url = buildUrl(String.format("/coins/%s/market_chart?interval=daily&vs_currency=%s&days=%d", id, vs_currency, days));
+            MarketChart marketChart = restTemplate.getForObject(url, MarketChart.class, new HttpEntity<>(headers));
+            if (marketChart != null) {
+                marketChart.setCachedAt(LocalDateTime.now());
+                marketChartCache.put(params, marketChart);
+                return marketChart;
+            } else {
+                throw new RuntimeException("Market chart data is null for days: " + days);
             }
         } catch (RestClientException e) {
             throw new RuntimeException(e);

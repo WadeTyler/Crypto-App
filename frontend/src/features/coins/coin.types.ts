@@ -141,3 +141,10 @@ export type SearchCoin = {
   thumb: string;
   large: string;
 }
+
+export type MarketChart = {
+  prices: number[][];
+  market_caps: number[][];
+  total_volumes: number[][];
+  cachedAt: string; // ISO 8601 date string from LocalDateTime
+}
