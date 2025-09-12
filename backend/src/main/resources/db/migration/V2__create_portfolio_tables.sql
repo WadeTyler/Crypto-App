@@ -1,37 +1,3 @@
--- {
---   userId: "user123",
---   portfolios: [
---     {
---       portfolioId: "portfolio456",
---       name: "Main Portfolio",
---       createdAt: "2024-01-15T10:00:00Z",
---       holdings: [
---         {
---           symbol: "BTC",
---           name: "Bitcoin",
---           quantity: 0.5,
---           averageCostBasis: 45000,
---           transactions: [
---             {
---               id: "tx789",
---               type: "buy|sell|transfer",
---               quantity: 0.25,
---               price: 44000,
---               fee: 15.50,
---               timestamp: "2024-01-15T10:00:00Z",
---               exchange: "coinbase"
---             }
---           ]
---         }
---       ],
---       totalValue: 22500.00,
---       totalCost: 22515.50,
---       pnl: -15.50,
---       pnlPercentage: -0.07
---     }
---   ]
--- }
-
 CREATE TABLE IF NOT EXISTS portfolios (
     id SERIAL PRIMARY KEY,
     user_id VARCHAR(255) NOT NULL,

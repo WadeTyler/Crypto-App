@@ -15,6 +15,7 @@ public class CryptoAppProperties {
     private String environment = "development"; // default to development
     private String mailQueueUrl;
     private String serviceEmail;
+    private String frontendUrl;
 
     public boolean isProduction() {
         return environment.equalsIgnoreCase("production");

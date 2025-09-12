@@ -18,11 +18,12 @@ cryptoapp:
     issuer: crypto-app
   mail-queue-url: ${MAIL_QUEUE_URL}
   service-email: ${SERVICE_EMAIL}
+  frontend-url: ${FRONTED_URL:http://localhost:5173}
 
-logging:
-  level:
-    org.springframework.web: DEBUG
-    org.springframework.security: DEBUG
+#logging:
+#  level:
+#    org.springframework.web: DEBUG
+#    org.springframework.security: DEBUG
 coingecko:
   api-key: ${COIN_GECKO_API_KEY}
   api-url: ${COIN_GECKO_API_URL:https://api.coingecko.com/api/v3}
