@@ -6,7 +6,7 @@ spring:
   datasource:
     username: ${DB_USER}
     password: ${DB_PASSWORD}
-    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME}
+    url: ${DB_URL}
   jpa:
     hibernate:
       ddl-auto: none
