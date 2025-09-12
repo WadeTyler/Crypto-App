@@ -36,10 +36,15 @@ export default function Footer() {
         <div className="h-px w-full bg-accent/30" />
 
         {/* Bottom bar */}
-        <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-secondary">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-secondary p-4">
           <p>
             © {new Date().getFullYear()} Crypto App. All rights reserved.
           </p>
+
+          <a href="https://www.coingecko.com/en/api" target="_blank">
+            <img src="/coingecko-logo.avif" alt="Data Powered by CoinGecko" className="min-w-[90px] max-w-[250px]" />
+          </a>
+
           <div className="flex items-center gap-4">
             <a href="#" className="hover-text-glow">Privacy</a>
             <a href="#" className="hover-text-glow">Terms</a>

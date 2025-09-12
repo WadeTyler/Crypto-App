@@ -158,6 +158,9 @@ function CoinsList() {
 
   return (
     <div className="flex flex-col items-center gap-8 w-full mx-auto">
+      <p className="text-secondary text-xs ml-auto">
+        Powered by <a href="https://www.coingecko.com/en/api" target="_blank" className="text-accent hover:underline hover:text-accent-hover duration-200">CoinGecko API</a>
+      </p>
       <div className="flex w-full gap-4 items-center justify-between">
         {/* Search Bar */}
         <form className="flex items-center justify-between w-full input-bar p-0! overflow-hidden">
@@ -222,7 +225,6 @@ function CoinsList() {
           <FontAwesomeIcon icon={faCaretRight} />
         </button>
       </div>
-
     </div>
   )
 }

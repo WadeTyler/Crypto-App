@@ -32,6 +32,12 @@ export default function CoinPage() {
 
             { /* Market Data */}
             <MarketData coinData={coinData}/>
+
+            <div className="flex flex-col md:flex-row md:items-center gap-4 mt-4">
+              <p className="text-secondary text-xs ml-auto">
+                Powered by <a href="https://www.coingecko.com/en/api" target="_blank" className="text-accent hover:underline hover:text-accent-hover duration-200">CoinGecko API</a>
+              </p>
+            </div>
           </div>
         )}
       </div>
