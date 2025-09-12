@@ -100,4 +100,21 @@ public class AuthController {
     public void changePassword(@RequestBody @Valid ChangePasswordRequest changePasswordRequest) {
         userService.changePassword(changePasswordRequest);
     }
+
+    /**
+     * Delete the currently authenticated user's account.
+     * @param authentication Spring Security authentication object
+     */
+    @DeleteMapping("/delete-account")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteAccount(HttpServletResponse response, Authentication authentication) {
+        if (authentication == null || !authentication.isAuthenticated()) {
+            throw HttpRequestException.unauthorized("User unauthenticated.");
+        }
+        AppUser user = (AppUser) authentication.getPrincipal();
+        userService.deleteAccount(user);
+
+        // Invalidate the JWT cookie
+        response.addCookie(jwtService.createLogoutCookie());
+    }
 }

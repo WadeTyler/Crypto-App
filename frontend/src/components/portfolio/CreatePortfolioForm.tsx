@@ -44,7 +44,7 @@ export default function CreatePortfolioForm({closeForm, setTargetPortfolioId}: {
         <div className="flex flex-col gap-4">
           <h2 className="text-2xl font-semibold">Create Portfolio</h2>
           <p className="text-sm text-secondary/70">
-
+            Fill out the form below to create a new portfolio.
           </p>
         </div>
 

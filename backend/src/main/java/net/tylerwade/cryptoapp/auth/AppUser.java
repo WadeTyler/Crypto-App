@@ -3,6 +3,7 @@ package net.tylerwade.cryptoapp.auth;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
+import net.tylerwade.cryptoapp.portfolio.Portfolio;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -60,4 +61,8 @@ public class AppUser implements UserDetails {
     public String getUsername() {
         return username;
     }
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, orphanRemoval = true)
+    private List<Portfolio> portfolios;
 }

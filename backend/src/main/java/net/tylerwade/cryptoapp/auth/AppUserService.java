@@ -195,4 +195,13 @@ public class AppUserService implements UserDetailsService {
                 """.formatted(firstName, code);
     }
 
+    public void deleteAccount(AppUser user) {
+        if (user == null) {
+            throw HttpRequestException.badRequest("User cannot be null.");
+        }
+        if (!appUserDao.existsById(user.getId())) {
+            throw HttpRequestException.notFound("User not found.");
+        }
+        appUserDao.delete(user);
+    }
 }

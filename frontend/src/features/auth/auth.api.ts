@@ -102,3 +102,18 @@ export async function changePassword(changePasswordRequest: ChangePasswordReques
     throw new Error(data.message || "Change password request failed");
   }
 }
+
+export async function deleteAccount(): Promise<void> {
+  const response = await fetch(`${API_URL}/api/v1/auth/delete-account`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    credentials: "include"
+  });
+
+  if (!response.ok) {
+    const data = await response.json();
+    throw new Error(data.message || "Delete account request failed");
+  }
+}
