@@ -8,10 +8,15 @@ import {
   faArrowTrendUp,
   faCaretLeft,
   faCaretRight,
-  faMagnifyingGlass
+  faMagnifyingGlass,
+  faShieldHalved,
+  faChartLine,
+  faClock,
+  faWallet
 } from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {useNavigate} from "react-router";
+import {useNavigate, Link} from "react-router";
+import type {IconDefinition} from "@fortawesome/free-regular-svg-icons";
 
 export default function HomePage() {
   return (
@@ -27,10 +32,85 @@ export default function HomePage() {
             and market trends. Join thousands of users who trust our platform for their crypto investments. Start
             tracking today!
           </p>
+
+          {/* Primary CTAs */}
+          <div className="mt-6 flex flex-wrap items-center justify-center gap-4">
+            <Link to="/portfolio" className="btn-2">
+              Get Started — It’s Free
+            </Link>
+            <Link to="/auth" className="btn-2">
+              Sign In / Create Account
+            </Link>
+          </div>
         </div>
+
+        {/* Feature highlights */}
+        <section aria-labelledby="features-heading" className="w-full">
+          <h2 id="features-heading" className="sr-only">Features</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <FeatureCard
+              icon={faChartLine}
+              title="Real‑Time Prices"
+              description="Live market data for Bitcoin, Ethereum, and thousands of altcoins."
+            />
+            <FeatureCard
+              icon={faWallet}
+              title="Smart Portfolio"
+              description="Track holdings and performance at a glance."
+            />
+            <FeatureCard
+              icon={faClock}
+              title="Lightning‑Fast"
+              description="Snappy UI built for a smooth tracking experience."
+            />
+            <FeatureCard
+              icon={faShieldHalved}
+              title="Privacy‑Friendly"
+              description="Your data stays yours. No spam. No nonsense."
+            />
+          </div>
+          <p className="mt-6 text-center text-secondary max-w-4xl mx-auto text-balance">
+            Our crypto portfolio tracker helps you analyze your investments with real‑time price charts, market caps,
+            and 24h performance. Optimize your strategy with timely insights across BTC, ETH, and the top coins.
+          </p>
+        </section>
 
         {/* Coins List */}
         <CoinsList/>
+
+        {/* FAQ Section */}
+        <section aria-labelledby="faq-heading" className="w-full max-w-4xl mx-auto">
+          <h2 id="faq-heading" className="text-2xl font-semibold mb-4">Frequently Asked Questions</h2>
+          <div className="space-y-3">
+            <details className="rounded-md border border-accent bg-background-secondary p-4">
+              <summary className="cursor-pointer font-medium">Is this crypto portfolio tracker free?</summary>
+              <div className="mt-2 text-secondary">
+                Yes. You can start tracking your portfolio for free with real‑time market data.
+              </div>
+            </details>
+            <details className="rounded-md border border-accent bg-background-secondary p-4">
+              <summary className="cursor-pointer font-medium">Which coins are supported?</summary>
+              <div className="mt-2 text-secondary">
+                We cover major assets like Bitcoin (BTC), Ethereum (ETH), and thousands of altcoins with up‑to‑date prices.
+              </div>
+            </details>
+            <details className="rounded-md border border-accent bg-background-secondary p-4">
+              <summary className="cursor-pointer font-medium">Can I view price changes and charts?</summary>
+              <div className="mt-2 text-secondary">
+                Yes. You can see 24h price changes, trends, and navigate to coin detail pages for deeper insights.
+              </div>
+            </details>
+          </div>
+        </section>
+
+        {/* Bottom CTA */}
+        <div className="w-full text-center">
+          <p className="text-secondary">Ready to take control of your crypto investments?</p>
+          <div className="mt-3 flex gap-3 justify-center">
+            <Link to="/portfolio" className="btn-2">Create Your Portfolio</Link>
+            <Link to="/coins/bitcoin" className="btn-2">Explore Bitcoin</Link>
+          </div>
+        </div>
 
       </div>
     </div>
@@ -177,4 +257,21 @@ function CoinRow({coin}: { coin: Coin }) {
 
     </div>
   )
+}
+
+// Lightweight feature card component
+function FeatureCard({ icon, title, description }: { icon: IconDefinition; title: string; description: string }) {
+  return (
+    <div className="rounded-md border border-accent bg-background-secondary p-5 h-full">
+      <div className="flex items-start gap-3">
+        <div className="text-accent">
+          <FontAwesomeIcon icon={icon} />
+        </div>
+        <div>
+          <h3 className="font-semibold">{title}</h3>
+          <p className="text-secondary mt-1">{description}</p>
+        </div>
+      </div>
+    </div>
+  );
 }
