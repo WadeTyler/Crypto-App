@@ -21,7 +21,7 @@ public class JwtProperties {
     public static final String AUTH_TOKEN_COOKIE_NAME = "auth_token";
 
     private String secret;
-    private long expirationMs = 86400000; // 1 day
+    private long expirationMs;
     private String issuer = "cryptoapp";
 
     public SecretKey getSecretKey() throws UnsupportedEncodingException {
